@@ -91,9 +91,9 @@ brew install arm-none-eabi-gcc
 >[!warning] Пакет не добавляет себя в PATH
 >После установки компилятор лежит в `/Applications/ArmGNUToolchain/15.3.rel1/arm-none-eabi/bin/`, но команда `arm-none-eabi-gcc` не найдётся: путь к нему нужно задать самому — см. [[Настройка переменных среды#^def|Настройка переменных среды]]. Первый способ этот шаг делает за вас, третий — нет.
 >
->``` bash
->echo 'export PATH="/Applications/ArmGNUToolchain/15.3.rel1/arm-none-eabi/bin:$PATH"' >> ~/.zshrc
->```
+> ``` bash
+> echo 'export PATH="/Applications/ArmGNUToolchain/15.3.rel1/arm-none-eabi/bin:$PATH"' >> ~/.zshrc
+> ```
 >
 >Перезапустите терминал и проверьте командой из начала карточки. В пути стоит номер версии — при переходе на следующую строку её придётся поправить.
 

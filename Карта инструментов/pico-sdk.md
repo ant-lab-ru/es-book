@@ -3,9 +3,6 @@ tags:
   - инструмент
   - сборка
   - программирование
-сайт: https://github.com/raspberrypi/pico-sdk
-документация: https://www.raspberrypi.com/documentation/pico-sdk/
-версия: 2.3.0
 понятия:
   - "[[SDK (Набор инструментов разработки)]]"
   - "[[Стартап-код]]"
@@ -15,6 +12,9 @@ tags:
   - "[[CMake]]"
   - "[[Git]]"
   - "[[picotool]]"
+сайт: https://github.com/raspberrypi/pico-sdk
+документация: https://www.raspberrypi.com/documentation/pico-sdk/
+версия: 2.3.0
 ---
 
 >[!note] Описание
@@ -44,6 +44,5 @@ git submodule update --init
 
 ## Ссылки
 
-- Руководство «Raspberry Pi Pico C/C++ SDK»: https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-c-sdk.pdf ([[Pico SDK Manual.pdf|файл в репозитории]])
 - Книга «Getting started with Raspberry Pi Pico»: https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf
 - Примеры: https://github.com/raspberrypi/pico-examples

@@ -1,9 +1,6 @@
 ---
 tags:
-  - инструмент
-  - железо
-сайт: https://www.raspberrypi.com/products/raspberry-pi-pico/
-документация: https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
+  - инструмент/железо
 понятия:
   - "[[Отладочная плата]]"
   - "[[Микроконтроллер]]"
@@ -11,6 +8,8 @@ tags:
   - "[[Загрузчик]]"
 связи:
   - "[[pico-sdk]]"
+сайт: https://www.raspberrypi.com/products/raspberry-pi-pico/
+документация: https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
 ---
 
 >[!NOTE] Описание
@@ -34,5 +33,5 @@ tags:
 
 ## Ссылки
 
-- Документация RP2040: https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf ([[RP2040 Datasheet.pdf|файл в репозитории]])
+- Документация RP2040: https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf
 - Распиновка платы: https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf

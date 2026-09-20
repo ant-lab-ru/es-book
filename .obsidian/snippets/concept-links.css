@@ -1,0 +1,30 @@
+/* Ссылки на карточки понятий: цвет основного текста, тонкое подчёркивание.
+   Атрибут data-link-path добавляет плагин Supercharged Links.
+
+   В режиме чтения атрибут стоит на самой ссылке <a>. В Live Preview ссылка
+   собрана из нескольких вложенных span, и атрибут может оказаться как снаружи,
+   так и внутри элемента, который Obsidian красит в цвет ссылки. Поэтому стиль
+   задаётся и самому элементу, и его содержимому, и обёрткам ссылки вокруг него. */
+
+.markdown-rendered a.internal-link[data-link-path^="Карта понятий/"],
+.markdown-source-view [data-link-path^="Карта понятий/"],
+.markdown-source-view [data-link-path^="Карта понятий/"] *,
+.markdown-source-view :is(.cm-hmd-internal-link, .cm-underline):has([data-link-path^="Карта понятий/"]) {
+  --link-color: var(--text-normal);
+  --link-color-hover: var(--text-normal);
+  --link-decoration: underline;
+  --link-decoration-hover: underline;
+  --link-decoration-thickness: 1px;
+  color: var(--text-normal) !important;
+  text-decoration-line: underline;
+  text-decoration-color: var(--text-faint) !important;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.markdown-rendered a.internal-link[data-link-path^="Карта понятий/"]:hover,
+.markdown-source-view [data-link-path^="Карта понятий/"]:hover,
+.markdown-source-view [data-link-path^="Карта понятий/"]:hover *,
+.markdown-source-view :is(.cm-hmd-internal-link, .cm-underline):has([data-link-path^="Карта понятий/"]):hover {
+  text-decoration-color: var(--text-accent) !important;
+}

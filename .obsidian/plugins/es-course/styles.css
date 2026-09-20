@@ -1,0 +1,287 @@
+/* ====================== Панель «Курс» и навигация в заметках ====================== */
+
+/* ---------- Панель «Курс» ---------- */
+
+.course-nav-panel {
+	padding: var(--size-4-2) var(--size-4-2) var(--size-4-8);
+}
+
+.course-nav-panel-header {
+	padding: var(--size-4-1) 0 var(--size-4-3);
+}
+
+.course-nav-panel-title {
+	padding: var(--size-2-2) var(--size-4-2);
+	border-radius: var(--radius-s);
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-bold);
+	color: var(--text-normal);
+}
+
+.course-nav-panel-title.is-clickable {
+	cursor: pointer;
+}
+
+.course-nav-panel-title.is-clickable:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.course-nav-panel-title.is-active {
+	color: var(--text-accent);
+}
+
+/* Длинные названия переносятся, а не обрезаются: читателю нужно видеть их целиком. */
+.course-nav-panel .tree-item-inner {
+	white-space: normal;
+	overflow: visible;
+	text-overflow: clip;
+	line-height: var(--line-height-tight);
+}
+
+.course-nav-panel .tree-item-self {
+	align-items: baseline;
+}
+
+.course-nav-number {
+	display: inline-block;
+	min-width: 1.6em;
+	margin-inline-end: var(--size-4-1);
+	font-size: var(--font-ui-smaller);
+	font-variant-numeric: tabular-nums;
+	color: var(--text-faint);
+}
+
+.course-nav-item.mod-module > .tree-item-self {
+	font-weight: var(--font-semibold);
+	color: var(--text-normal);
+}
+
+.course-nav-item.mod-module + .course-nav-item.mod-module {
+	margin-top: var(--size-4-1);
+}
+
+.course-nav-item.mod-lesson > .tree-item-self .course-nav-number {
+	min-width: 2.2em;
+}
+
+.course-nav-item.mod-appendices > .tree-item-self,
+.course-nav-item.mod-reference > .tree-item-self {
+	color: var(--text-muted);
+}
+
+.course-nav-group,
+.course-nav-section {
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-semibold);
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--text-faint);
+}
+
+.course-nav-group {
+	padding: var(--size-4-2) 0 var(--size-2-1) var(--size-4-6);
+}
+
+.course-nav-section {
+	margin: var(--size-4-6) 0 var(--size-4-1);
+	padding: 0 var(--size-4-2);
+}
+
+/* ---------- Хлебные крошки над заметкой ---------- */
+
+.course-nav-top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--size-2-1) var(--size-2-3);
+	margin-bottom: var(--size-4-3);
+	font-family: var(--font-interface);
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+}
+
+.course-nav-sep {
+	color: var(--text-faint);
+}
+
+.course-nav-crumb.is-link {
+	cursor: pointer;
+}
+
+.course-nav-crumb.is-link:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.course-nav-crumb.is-current {
+	color: var(--text-faint);
+}
+
+/* ---------- Карточки «Назад / Далее» под заметкой ---------- */
+
+.course-nav-bottom {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--size-4-3);
+	margin: var(--size-4-12) 0 var(--size-4-6);
+	font-family: var(--font-interface);
+}
+
+.course-nav-card {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-3);
+	min-width: 0;
+	padding: var(--size-4-3) var(--size-4-4);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background-color: var(--background-primary);
+	cursor: pointer;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.course-nav-card:hover {
+	border-color: var(--interactive-accent);
+	background-color: var(--background-modifier-hover);
+}
+
+.course-nav-card.mod-prev {
+	grid-column: 1;
+}
+
+.course-nav-card.mod-next {
+	grid-column: 2;
+	flex-direction: row-reverse;
+	text-align: right;
+}
+
+.course-nav-card-icon {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--text-faint);
+}
+
+.course-nav-card:hover .course-nav-card-icon {
+	color: var(--text-accent);
+}
+
+.course-nav-card-body {
+	min-width: 0;
+}
+
+.course-nav-card-label {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+
+.course-nav-card-title {
+	margin-top: var(--size-2-1);
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	line-height: var(--line-height-tight);
+	color: var(--text-normal);
+}
+
+/* На узком экране карточки встают друг под друга. */
+@media (max-width: 600px) {
+	.course-nav-bottom {
+		grid-template-columns: 1fr;
+	}
+
+	.course-nav-card.mod-next {
+		grid-column: 1;
+	}
+}
+
+/* ---------- Ручные таблицы навигации ---------- */
+
+.course-nav-hide-legacy .markdown-rendered .course-nav-legacy {
+	display: none;
+}
+
+/* ====================== Панель «Понятия статьи» ====================== */
+
+.concept-panel {
+	padding: var(--size-4-2) var(--size-4-3);
+}
+
+.concept-panel-header {
+	margin-bottom: var(--size-4-3);
+}
+
+.concept-panel-heading {
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-bold);
+	color: var(--text-normal);
+}
+
+.concept-panel-meta {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+	margin-top: var(--size-4-1);
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+}
+
+.concept-panel-file {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.concept-panel-total {
+	flex-shrink: 0;
+	color: var(--text-faint);
+}
+
+.concept-panel-item {
+	padding: var(--size-4-2) 0;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.concept-panel-title {
+	display: flex;
+	align-items: baseline;
+	gap: var(--size-4-2);
+	font-weight: var(--font-semibold);
+}
+
+.concept-panel-title a.internal-link {
+	color: var(--text-normal);
+	text-decoration: none;
+}
+
+.concept-panel-title a.internal-link:hover {
+	color: var(--text-accent);
+}
+
+.concept-panel-count {
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-normal);
+	color: var(--text-faint);
+}
+
+.concept-panel-def {
+	margin-top: var(--size-4-1);
+	font-size: var(--font-ui-small);
+	line-height: var(--line-height-normal);
+	color: var(--text-muted);
+	user-select: text;
+}
+
+.concept-panel-def p {
+	margin: 0;
+}
+
+.concept-panel-def p + p {
+	margin-top: var(--size-4-1);
+}
+
+.concept-panel-empty,
+.concept-panel-missing {
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
+}

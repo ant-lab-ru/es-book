@@ -1,0 +1,11 @@
+name: 2.1.5 Память массивов и структур
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  check:
+    uses: ant-lab-ru/es-test/.github/workflows/check-2-1-5.yml@master
+    secrets:
+      ES_ACCOUNT_SECRET: ${{ secrets.ES_ACCOUNT_SECRET }}

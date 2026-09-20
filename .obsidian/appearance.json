@@ -4,6 +4,8 @@
   "enabledCssSnippets": [
     "Скрыть свойства в режиме чтения",
     "Шрифт JetBrains Mono",
-    "Изображения по центру"
+    "Изображения по центру",
+    "supercharged-links-gen",
+    "concept-links"
   ]
 }

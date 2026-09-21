@@ -684,11 +684,19 @@ module.exports = class EmbeddedSystemsCoursePlugin extends Plugin {
 		this.addCommand({ id: 'next', name: 'Далее', checkCallback: (checking) => this.go('next', checking) });
 		this.addCommand({ id: 'prev', name: 'Назад', checkCallback: (checking) => this.go('prev', checking) });
 
-		document.body.addClass('course-nav-hide-legacy');
-		this.registerMarkdownPostProcessor((el) => markLegacyNav(el));
-
 		this.requestRebuild = debounce(() => this.rebuild(), 300, true);
 		this.requestDecorate = debounce(() => this.decorateAll(), 50, true);
+		this.decorateRetries = new WeakMap();
+		this.previewObservers = new WeakMap();
+		this.retryTimer = 0;
+
+		document.body.addClass('course-nav-hide-legacy');
+		// В режиме чтения Obsidian перестраивает содержимое заметки при каждой
+		// отрисовке и стирает вставленную навигацию: возвращаем её на место.
+		this.registerMarkdownPostProcessor((el) => {
+			markLegacyNav(el);
+			this.requestDecorate();
+		});
 
 		this.app.workspace.onLayoutReady(async () => {
 			const { vault, metadataCache, workspace } = this.app;
@@ -714,6 +722,7 @@ module.exports = class EmbeddedSystemsCoursePlugin extends Plugin {
 	}
 
 	onunload() {
+		window.clearTimeout(this.retryTimer);
 		document.body.removeClass('course-nav-hide-legacy');
 		document.querySelectorAll('.course-nav-top, .course-nav-bottom').forEach((el) => el.remove());
 	}
@@ -847,8 +856,24 @@ module.exports = class EmbeddedSystemsCoursePlugin extends Plugin {
 
 	decorateAll() {
 		for (const leaf of this.app.workspace.getLeavesOfType('markdown')) {
+			this.watchPreview(leaf.view);
 			this.decorateView(leaf.view);
 		}
+	}
+
+	// В режиме чтения Obsidian строит содержимое заметки сам и при каждой
+	// перерисовке стирает вставленную навигацию — в том числе уже после того,
+	// как плагин отработал по событию. Наблюдатель ловит любую такую
+	// перерисовку и просит вставить навигацию заново; лишние срабатывания
+	// гасит проверка ключа в decorateView.
+	watchPreview(view) {
+		if (!view || !view.previewMode || this.previewObservers.has(view)) return;
+		const target = view.previewMode.containerEl;
+		if (!target) return;
+		const observer = new MutationObserver(() => this.requestDecorate());
+		observer.observe(target, { childList: true, subtree: true });
+		this.previewObservers.set(view, observer);
+		this.register(() => observer.disconnect());
 	}
 
 	navModel(item) {
@@ -922,21 +947,44 @@ module.exports = class EmbeddedSystemsCoursePlugin extends Plugin {
 		};
 	}
 
+	// Режим чтения отрисовывает заметку асинхронно, поэтому контейнера для
+	// вставки может ещё не быть. Пробуем ещё несколько раз, счётчик попыток
+	// сбрасывается при первой удачной вставке.
+	retryDecorate(view) {
+		const left = (this.decorateRetries.get(view) ?? 5) - 1;
+		if (left < 0) return;
+		this.decorateRetries.set(view, left);
+		window.clearTimeout(this.retryTimer);
+		this.retryTimer = window.setTimeout(() => this.requestDecorate(), 100);
+	}
+
 	decorateView(view) {
 		if (!view || !view.containerEl) return;
-		const existing = view.containerEl.querySelectorAll('.course-nav-top, .course-nav-bottom');
+		const clear = () =>
+			view.containerEl.querySelectorAll('.course-nav-top, .course-nav-bottom').forEach((el) => el.remove());
+
 		const item = view.file ? this.course.items.get(view.file.path) : null;
-		const host = item ? this.hostsOf(view) : null;
-		if (!item || !host) {
-			existing.forEach((el) => el.remove());
+		if (!item) {
+			clear();
 			return;
 		}
 
+		const host = this.hostsOf(view);
+		if (!host) {
+			clear();
+			this.retryDecorate(view);
+			return;
+		}
+		this.decorateRetries.delete(view);
+
 		const model = this.navModel(item);
 		const key = `${host.mode}|${view.file.path}|${JSON.stringify(model)}`;
+		// Ищем уже вставленное там же, куда вставляем: иначе блок от предыдущей
+		// заметки, переживший перерисовку, остаётся на странице.
+		const existing = host.root.querySelectorAll('.course-nav-top, .course-nav-bottom');
 		const top = host.root.querySelector('.course-nav-top');
 		if (top && top.dataset.key === key && existing.length === (model.prev || model.next ? 2 : 1)) return;
-		existing.forEach((el) => el.remove());
+		clear();
 
 		const topEl = this.renderCrumbs(model, view);
 		topEl.dataset.key = key;

@@ -2,7 +2,16 @@ name: 2.1.6 Чтение по адресу
 
 on:
   push:
+    paths:
+      - '211-command-usb/**'
+      - '.github/workflows/check-2-1-6.yml'
   workflow_dispatch:
+
+# Пока идёт отладка, пушей подряд бывает много: в работе остаётся последний,
+# предыдущие прогоны той же проверки отменяются.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:

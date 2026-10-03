@@ -1,0 +1,12 @@
+``` yaml
+name: 1.1.4 Создание репозитория курса
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  check:
+    uses: ant-lab-ru/es-test/.github/workflows/check-1-1-4.yml@master
+      ES_ACCOUNT_SECRET: ${{ secrets.ES_ACCOUNT_SECRET }}
+```
